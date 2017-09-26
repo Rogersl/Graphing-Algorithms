@@ -9,28 +9,6 @@ from collections import defaultdict
 from heapq import *
 
 #--------------------------------------------------------------
-# Make "random" graph of user input size
-#--------------------------------------------------------------
-edge_prob = 50          # % probability for an edge (u,v) to be created
-max_base_weight = 20    #random weight x, set weight from 0-x
-weight_variance = 5     #weight variance y, sets weights = 0-x + 0-y
-
-n = input('Enter number of graph vertices n: ')
-nodes = []
-edges = []
-for i in range(n):
-    nodes.append(i)
-
-#Create random edges using edge_prob.  Check for x < y so that we can copy 
-#to other half (x > y), becuase this is an undirected graph.
-for x in range(n):
-    for y in range(n):
-        if x < y and random.randint(01,10) <= edge_prob:
-            w = random.randint(1,max_base_weight) + random.randint(1,weight_variance)
-            edges.append((x, y, w))
-            edges.append((y, x, w))
-
-#--------------------------------------------------------------
 #Prim Code
 #--------------------------------------------------------------
 def prim(nodes, edges):
@@ -100,6 +78,28 @@ def kruskal(nodes, edges):
             forest.union(tree1, tree2)
 
 #--------------------------------------------------------------
+# Make "random" graph of user input size
+#--------------------------------------------------------------
+edge_prob = 4           #probability (x/10) for an edge (u,v)
+max_base_weight = 20    #random weight x, set weight from 0-x
+weight_variance = 5     #weight variance y, sets weights = 0-x + 0-y
+
+n = input('Enter number of graph vertices n: ')
+nodes = []
+edges = []
+for i in range(n):
+    nodes.append(i)
+
+#Create random edges using edge_prob.  Check for x < y so that we can copy 
+#to other half (x > y), becuase this is an undirected graph.
+for x in range(n):
+    for y in range(n):
+        if x < y and random.randint(0,10) <= edge_prob:
+            w = random.randint(0,max_base_weight) + random.randint(0,weight_variance)
+            edges.append((x, y, w))
+            edges.append((y, x, w))
+
+#--------------------------------------------------------------
 # Execute functions, calculate runtime, output results
 #--------------------------------------------------------------
 
@@ -110,14 +110,6 @@ kruskal_end = time.clock()
 prim_start = time.clock()
 prim_mst = prim(nodes, edges)
 prim_end = time.clock()
-
-print 'Nodes: '
-for node in nodes:
-    print node
-
-print 'Edges: '
-for edge in edges:
-    print edge
 
 print '\nKruskal MST contains: '
 for edge in kruskal_mst:
